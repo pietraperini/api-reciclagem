@@ -1,17 +1,17 @@
 package br.com.unip.apireciclagem.controller;
 import br.com.unip.apireciclagem.dto.LixoDto;
 import br.com.unip.apireciclagem.entity.Lixo;
+import br.com.unip.apireciclagem.form.LixoForm;
 import br.com.unip.apireciclagem.repository.LixoRepository;
-import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -29,12 +29,18 @@ public class LixoController {
             return LixoDto.convert(lixos);
     }
 
-    //@GetMapping("{id}")
-    //@Transactional(readOnly = true)
-    //public LixoDto findById(@PathVariable Long id) {
-    //    return lixoRepository.findById(id)
-    //            .map(LixoDto::new)
-    //            .orElseThrow(NotFoundException::new);
+    @GetMapping("{nome}")
+    @Transactional(readOnly = true)
+    public List<LixoDto> findById(@PathVariable String nome) {
+        List<Lixo> lixos = lixoRepository.findByNome(nome);
+        return LixoDto.convert(lixos);
+    }
+
+    //@PostMapping
+    //@ResponseStatus(HttpStatus.CREATED)
+    //public LixoDto save(@RequestBody @Valid LixoForm form){
+    //    var lixo = lixoRepository.save(form.toModel(lixoRepository));
+    //    return new LixoDto(lixo);
     //}
 
 }
